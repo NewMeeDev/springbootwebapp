@@ -1,27 +1,50 @@
 <html xmlns="http://www.thymeleaf.org">
 	<head>
-		<title>List Employees</title>
+		<title>Alle Mitarbeiter</title>
+		<link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	</head>
 	<body>
-		<div>
-			<h2>List Employees</h2>
+		<div class="container">
+			<h2>Alle Mitarbeiter</h2>
 			<hr/>
-			<table border="1">
+			<a th:href="@{/addEmployeeForm}" class="btn btn-primary mb-2">Mitarbeiter hinzufügen oder ändern</a>
+			<table class="table table-bordered table-striped" id="employee-table">
 				<thead>
 					<tr>
 						<th>Name</th>		
 						<th>Email</th>
-						<th>Department</th>			
+						<th>Abteilung</th>
+						<th>Aktionen</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="employee: ${employees}">
 						<td th:text="${employee.name}"></td>
 						<td th:text="${employee.email}"></td>
-						<td th:text="${employee.department}"></td>						
+						<td th:text="${employee.department}"></td>
+						<td>
+							<a th:href="@{/showUpdateForm(employeeId=${employee.id})}" class="btn btn-info">Ändern</a>
+							<a th:href="@{/deleteEmployee(employeeId=${employee.id})}" class="btn btn-danger ml-2">Löschen</a>
+						</td>					
 					</tr>
 				</tbody>
 			</table>
 		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+		<script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("#employee-table").DataTable({
+					'aoColumnDefs' : [{
+						'bSortable' : false,
+						'aTargets' : [-1]
+					}],	
+					'language' : {
+						'url': '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json'
+					}
+				});
+			})
+		</script>
 	</body>
 </html>
